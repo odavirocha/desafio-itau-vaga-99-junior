@@ -1,5 +1,7 @@
 package dev.droca.desafio_itau.service;
 
+import java.math.MathContext;
+import java.math.RoundingMode;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.OffsetDateTime;
@@ -27,7 +29,7 @@ public class DesafioService {
 
         long processEnd = System.nanoTime();
         log.info("Tempo de execução do método deleteTransaction() foi de: "+ (((double)processEnd - processStart) / 1000000)+ "ms");
-        return new TransactionResponseDTO(a.valor(), a.dataHora());
+        return new TransactionResponseDTO(a.valor().setScale(2, RoundingMode.DOWN), a.dataHora());
     }
 
     public void deleteTransaction() {
@@ -50,7 +52,7 @@ public class DesafioService {
             boolean verifyTime = transaction.dataHora().toEpochSecond() >= limitDate.toEpochSecond();
             if (verifyTime) {
                 betweenValues.add(transaction);
-                statistic.accept(transaction.valor());
+                statistic.accept(Double.parseDouble(String.valueOf(transaction.valor().setScale(2, RoundingMode.DOWN))));
             }
         }
 
