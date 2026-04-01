@@ -1,5 +1,6 @@
 package dev.droca.desafio_itau.controller;
 
+import dev.droca.desafio_itau.dto.TransactionResponseDTO;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -28,21 +29,21 @@ public class DesafioController {
     }
 
     @PostMapping("transacao")
-    public ResponseEntity<Object> createTransaction(@RequestBody @Valid TransactionRequestDTO transactionRequest) {
-        desafioService.createTransaction(transactionRequest);
-        return new ResponseEntity<Object>(HttpStatus.CREATED);
+    public ResponseEntity<TransactionResponseDTO> createTransaction(@RequestBody @Valid TransactionRequestDTO transactionRequest) {
+        TransactionResponseDTO response = desafioService.createTransaction(transactionRequest);
+        return new ResponseEntity<>(response, HttpStatus.CREATED);
     }
 
     @DeleteMapping("transacao")
-    public ResponseEntity<Object> deleteTransaction() {
+    public ResponseEntity<Void> deleteTransaction() {
         desafioService.deleteTransaction();
-        return new ResponseEntity<Object>(HttpStatus.OK);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @GetMapping("estatistica")
     public ResponseEntity<StatisticResponseDTO> getStatistic() {
         StatisticResponseDTO response = desafioService.getStatistic();
-        return new ResponseEntity<StatisticResponseDTO>(response, HttpStatus.OK);
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
     
 }
