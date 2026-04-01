@@ -20,8 +20,8 @@ public class ApplicationControllerAdvice {
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
     @ResponseStatus(HttpStatus.UNPROCESSABLE_ENTITY)
-    public void handleValidationException() {
-        log.warn("Transação não aceita.");
+    public void handleValidationException(MethodArgumentNotValidException e) {
+        log.warn("Transação não aceita. {}", e.getMessage());
     }
 
     @ExceptionHandler(HttpMessageNotReadableException.class)

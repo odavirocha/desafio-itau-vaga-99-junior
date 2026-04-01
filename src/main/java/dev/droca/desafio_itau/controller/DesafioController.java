@@ -26,14 +26,14 @@ public class DesafioController {
 
     @PostMapping("transacao")
     public ResponseEntity<TransactionResponseDTO> createTransaction(@RequestBody @Valid TransactionRequestDTO transactionRequest) {
-        log.info("Entrada de uma nova transação!");
+        log.info("Criando uma nova transação!");
         TransactionResponseDTO response = desafioService.createTransaction(transactionRequest);
         return new ResponseEntity<>(response, HttpStatus.CREATED);
     }
 
     @DeleteMapping("transacao")
     public ResponseEntity<Void> deleteTransaction() {
-        log.info("Limpeza de todas as transações!");
+        log.info("Limpado todas as transações!");
         desafioService.deleteTransaction();
         return new ResponseEntity<>(HttpStatus.OK);
     }
@@ -41,7 +41,7 @@ public class DesafioController {
     @GetMapping({"estatistica", "estatistica/{range}"})
     public ResponseEntity<StatisticResponseDTO> getStatistic(@PathVariable(required = false) Integer range) {
         int trueRange = range != null ? range : 60;
-        log.info("Busca de transações.");
+        log.info("Retornando todas as estatísticas dos últimos " + trueRange + " segundos");
         StatisticResponseDTO response = desafioService.getStatistic(trueRange);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }

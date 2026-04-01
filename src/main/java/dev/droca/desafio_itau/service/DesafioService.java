@@ -1,5 +1,7 @@
 package dev.droca.desafio_itau.service;
 
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.time.OffsetDateTime;
 import java.util.*;
 
@@ -20,7 +22,7 @@ public class DesafioService {
     public TransactionResponseDTO createTransaction(TransactionRequestDTO transactionRequest) {
         TransactionRequestDTO a = new TransactionRequestDTO(transactionRequest.valor(), transactionRequest.dataHora());
         db.save(a);
-        log.info("Transação criada.");
+        log.info("Transação criada. {}", OffsetDateTime.now());
         return new TransactionResponseDTO(a.valor(), a.dataHora());
     }
 
@@ -30,6 +32,7 @@ public class DesafioService {
     }
     
     public StatisticResponseDTO getStatistic(int range) {
+        long processStart = System.nanoTime();
         OffsetDateTime limitDate = OffsetDateTime.now().minusSeconds(range);
         List<TransactionRequestDTO> transactions = db.getDatabase();
         Set<TransactionRequestDTO> betweenValues = new HashSet<>(); // dentro dos 60s
@@ -45,8 +48,14 @@ public class DesafioService {
 
         int count = betweenValues.size();
 
-        if (count == 0) return new StatisticResponseDTO(0, 0.0, 0.0, 0.0, 0.0);
+        if (count == 0) {
+            long processEnd = System.nanoTime();
+            log.info("Tempo de execução do método getStatistic() foi de: "+ (((double)processEnd - processStart) / 1000000)+ "ms");
+            return new StatisticResponseDTO(0, 0.0, 0.0, 0.0, 0.0);
+        }
 
+        long processEnd = System.nanoTime();
+        log.info("Tempo de execução do método getStatistic() foi de: "+ (((double)processEnd - processStart) / 1000000)+ "ms");
         return new StatisticResponseDTO(count, statistic.getSum(), statistic.getAverage(), statistic.getMin(), statistic.getMax());
     }
 
