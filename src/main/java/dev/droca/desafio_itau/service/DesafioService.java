@@ -3,6 +3,7 @@ package dev.droca.desafio_itau.service;
 import java.time.OffsetDateTime;
 import java.util.*;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import dev.droca.desafio_itau.db.Db;
@@ -11,22 +12,25 @@ import dev.droca.desafio_itau.dto.TransactionRequestDTO;
 import dev.droca.desafio_itau.dto.TransactionResponseDTO;
 
 @Service
+@Slf4j
 public class DesafioService {
 
     Db db = new Db();
 
     public TransactionResponseDTO createTransaction(TransactionRequestDTO transactionRequest) {
-        TransactionRequestDTO a = new TransactionRequestDTO(transactionRequest.valor(), OffsetDateTime.now());
+        TransactionRequestDTO a = new TransactionRequestDTO(transactionRequest.valor(), transactionRequest.dataHora());
         db.save(a);
+        log.info("Transação criada.");
         return new TransactionResponseDTO(a.valor(), a.dataHora());
     }
 
     public void deleteTransaction() {
         db.delete();
+        log.info("Transação deletada.");
     }
     
-    public StatisticResponseDTO getStatistic() {
-        OffsetDateTime limitDate = OffsetDateTime.now().minusSeconds(60);
+    public StatisticResponseDTO getStatistic(int range) {
+        OffsetDateTime limitDate = OffsetDateTime.now().minusSeconds(range);
         List<TransactionRequestDTO> transactions = db.getDatabase();
         Set<TransactionRequestDTO> betweenValues = new HashSet<>(); // dentro dos 60s
         DoubleSummaryStatistics statistic = new DoubleSummaryStatistics();

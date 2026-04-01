@@ -12,7 +12,6 @@ public class Db {
 
     public void save(TransactionRequestDTO transactionRequest) {
         database.put(id++, transactionRequest);
-        id++;
     }
 
     public void delete() {

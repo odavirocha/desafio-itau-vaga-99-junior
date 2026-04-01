@@ -1,25 +1,21 @@
 package dev.droca.desafio_itau.controller;
 
 import dev.droca.desafio_itau.dto.TransactionResponseDTO;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 import dev.droca.desafio_itau.dto.StatisticResponseDTO;
 import dev.droca.desafio_itau.dto.TransactionRequestDTO;
 import dev.droca.desafio_itau.service.DesafioService;
 import jakarta.validation.Valid;
 
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.GetMapping;
-
-
 
 @Controller
 @RequestMapping("/")
+@Slf4j
 public class DesafioController {
     
     DesafioService desafioService;
@@ -30,20 +26,24 @@ public class DesafioController {
 
     @PostMapping("transacao")
     public ResponseEntity<TransactionResponseDTO> createTransaction(@RequestBody @Valid TransactionRequestDTO transactionRequest) {
+        log.info("Entrada de uma nova transação!");
         TransactionResponseDTO response = desafioService.createTransaction(transactionRequest);
         return new ResponseEntity<>(response, HttpStatus.CREATED);
     }
 
     @DeleteMapping("transacao")
     public ResponseEntity<Void> deleteTransaction() {
+        log.info("Limpeza de todas as transações!");
         desafioService.deleteTransaction();
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
-    @GetMapping("estatistica")
-    public ResponseEntity<StatisticResponseDTO> getStatistic() {
-        StatisticResponseDTO response = desafioService.getStatistic();
+    @GetMapping({"estatistica", "estatistica/{range}"})
+    public ResponseEntity<StatisticResponseDTO> getStatistic(@PathVariable(required = false) Integer range) {
+        int trueRange = range != null ? range : 60;
+        log.info("Busca de transações.");
+        StatisticResponseDTO response = desafioService.getStatistic(trueRange);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
-    
+
 }
