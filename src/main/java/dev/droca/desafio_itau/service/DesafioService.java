@@ -20,15 +20,23 @@ public class DesafioService {
     Db db = new Db();
 
     public TransactionResponseDTO createTransaction(TransactionRequestDTO transactionRequest) {
+        long processStart = System.nanoTime();
         TransactionRequestDTO a = new TransactionRequestDTO(transactionRequest.valor(), transactionRequest.dataHora());
         db.save(a);
         log.info("Transação criada. {}", OffsetDateTime.now());
+
+        long processEnd = System.nanoTime();
+        log.info("Tempo de execução do método deleteTransaction() foi de: "+ (((double)processEnd - processStart) / 1000000)+ "ms");
         return new TransactionResponseDTO(a.valor(), a.dataHora());
     }
 
     public void deleteTransaction() {
+        long processStart = System.nanoTime();
         db.delete();
         log.info("Transação deletada.");
+
+        long processEnd = System.nanoTime();
+        log.info("Tempo de execução do método deleteTransaction() foi de: "+ (((double)processEnd - processStart) / 1000000)+ "ms");
     }
     
     public StatisticResponseDTO getStatistic(int range) {
