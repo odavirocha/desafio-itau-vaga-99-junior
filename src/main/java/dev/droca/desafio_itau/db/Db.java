@@ -3,23 +3,30 @@ package dev.droca.desafio_itau.db;
 import java.util.*;
 
 import dev.droca.desafio_itau.dto.TransactionRequestDTO;
+import dev.droca.desafio_itau.model.TransactionFakeEntity;
+import org.springframework.stereotype.Component;
 
-
+@Component
 public class Db {
-    private Map<Integer, TransactionRequestDTO> database = new HashMap<>();
+    private List<TransactionFakeEntity> database = new ArrayList<>();
 
     private int id = 0;
 
-    public void save(TransactionRequestDTO transactionRequest) {
-        database.put(id++, transactionRequest);
+    public TransactionFakeEntity save(TransactionRequestDTO transactionRequest) {
+        TransactionFakeEntity transactionFakeEntity = new TransactionFakeEntity(id++, transactionRequest);
+        database.add(transactionFakeEntity);
+        return transactionFakeEntity;
     }
 
     public void delete() {
         database.clear();
     }
 
-    public List<TransactionRequestDTO> getDatabase() {
-        return new ArrayList<>(database.values());
+    public List<TransactionFakeEntity> getDatabase() {
+        return database;
     }
 
+    public Object sabe() {
+        return null;
+    }
 }

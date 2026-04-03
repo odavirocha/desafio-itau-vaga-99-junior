@@ -6,4 +6,8 @@ public record StatisticResponseDTO(
     Double avg,
     Double min,
     Double max
-) {}
+) {
+    public double ab() {
+        return 0;
+    }
+}
