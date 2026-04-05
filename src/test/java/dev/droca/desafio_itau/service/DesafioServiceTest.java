@@ -138,14 +138,5 @@ class DesafioServiceTest {
         assertEquals(126.73, response.max());
     }
 
-//    @Test
-//    @DisplayName("Deve retornar sucesso ao enviar um range negativo")
-//    void getStatisticValidatePositiveOrZeroRangeTest() {
-//        Integer range = -1;
-//
-//        Set<ConstraintViolation<Integer>> violations = validator.validate(range);
-//        String error = violations.stream().map(ConstraintViolation::getMessage).collect(Collectors.joining());
-//        assertEquals("O intervalo tem que ser positivo!", error);
-//    }
 
 }

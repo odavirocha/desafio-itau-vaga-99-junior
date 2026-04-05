@@ -20,13 +20,13 @@ public class ApplicationControllerAdvice {
     }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
-    @ResponseStatus(HttpStatus.UNPROCESSABLE_ENTITY)
+    @ResponseStatus(HttpStatus.UNPROCESSABLE_CONTENT)
     public void handleValidationExceptionAnnotationValid(MethodArgumentNotValidException e) {
         log.warn("Transação não aceita. {}", e.getMessage());
     }
 
     @ExceptionHandler(ConstraintViolationException.class)
-    @ResponseStatus(HttpStatus.UNPROCESSABLE_ENTITY)
+    @ResponseStatus(HttpStatus.UNPROCESSABLE_CONTENT)
     public void handleValidationExceptionAnnotationValidated(ConstraintViolationException e) {
         log.warn("Transação não aceita. {}", e.getMessage());
     }
