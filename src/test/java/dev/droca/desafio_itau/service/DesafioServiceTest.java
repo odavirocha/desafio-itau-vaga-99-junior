@@ -5,27 +5,49 @@ import dev.droca.desafio_itau.dto.StatisticResponseDTO;
 import dev.droca.desafio_itau.dto.TransactionRequestDTO;
 import dev.droca.desafio_itau.dto.TransactionResponseDTO;
 import dev.droca.desafio_itau.model.TransactionFakeEntity;
+import jakarta.validation.ConstraintViolation;
+import jakarta.validation.Validation;
+import jakarta.validation.Validator;
+import jakarta.validation.ValidatorFactory;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import static org.junit.jupiter.api.Assertions.assertEquals;
+
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 import java.math.BigDecimal;
 import java.time.OffsetDateTime;
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @ExtendWith(MockitoExtension.class)
-public class DesafioServiceTest {
+class DesafioServiceTest {
+    private static ValidatorFactory validatorFactory;
+    private static Validator validator;
 
     @InjectMocks
     DesafioService desafioService;
 
     @Mock
     Db db;
+
+    @BeforeAll
+    public static void createValidator() {
+        validatorFactory = Validation.buildDefaultValidatorFactory();
+        validator = validatorFactory.getValidator();
+    }
+
+    @AfterAll
+    public static void close() {
+        validatorFactory.close();
+    }
 
     @Test
     @DisplayName("Deve retornar sucesso ao criar uma transação")
@@ -39,6 +61,50 @@ public class DesafioServiceTest {
 
         assertEquals(transactionRequest.valor(), response.valor());
         assertEquals(transactionRequest.dataHora(), response.dataHora());
+    }
+
+    @Test
+    @DisplayName("Deve retornar sucesso ao enviar um valor nulo")
+    void createTransactionValidateNotNullValorTest() {
+        TransactionRequestDTO transactionRequest = new TransactionRequestDTO(null, OffsetDateTime.now().minusSeconds(10));
+
+        Set<ConstraintViolation<TransactionRequestDTO>> violations = validator.validate(transactionRequest);
+
+        String error = violations.stream().map(ConstraintViolation::getMessage).collect(Collectors.joining());
+        assertEquals("Campo [valor] é obrigatório.", error);
+    }
+
+    @Test
+    @DisplayName("Deve retornar sucesso ao enviar valor negativo no atributo valor")
+    void createTransactionValidatePositiveOrZeroValorTest() {
+        TransactionRequestDTO transactionRequest = new TransactionRequestDTO(BigDecimal.valueOf(-1), OffsetDateTime.now().minusSeconds(10));
+
+        Set<ConstraintViolation<TransactionRequestDTO>> violations = validator.validate(transactionRequest);
+
+        String error = violations.stream().map(ConstraintViolation::getMessage).collect(Collectors.joining());
+        assertEquals("O valor tem que ser positivo e maior ou igual a zero.", error);
+    }
+
+    @Test
+    @DisplayName("Deve retornar sucesso ao enviar uma data nula")
+    void createTransactionValidateNotNullDataHoraTest() {
+        TransactionRequestDTO transactionRequest = new TransactionRequestDTO(BigDecimal.valueOf(20), null);
+
+        Set<ConstraintViolation<TransactionRequestDTO>> violations = validator.validate(transactionRequest);
+
+        String error = violations.stream().map(ConstraintViolation::getMessage).collect(Collectors.joining());
+        assertEquals("Campo [dataHora] é obrigatório.", error);
+    }
+
+    @Test
+    @DisplayName("Deve retornar sucesso ao enviar uma data no futuro")
+    void createTransactionValidatePastDataHoraTest() {
+        TransactionRequestDTO transactionRequest = new TransactionRequestDTO(BigDecimal.valueOf(20), OffsetDateTime.now().plusSeconds(10));
+
+        Set<ConstraintViolation<TransactionRequestDTO>> violations = validator.validate(transactionRequest);
+
+        String error = violations.stream().map(ConstraintViolation::getMessage).collect(Collectors.joining());
+        assertEquals("A data está no futuro.", error);
     }
 
     @Test
@@ -71,5 +137,15 @@ public class DesafioServiceTest {
         assertEquals(4.99, response.min());
         assertEquals(126.73, response.max());
     }
+
+//    @Test
+//    @DisplayName("Deve retornar sucesso ao enviar um range negativo")
+//    void getStatisticValidatePositiveOrZeroRangeTest() {
+//        Integer range = -1;
+//
+//        Set<ConstraintViolation<Integer>> violations = validator.validate(range);
+//        String error = violations.stream().map(ConstraintViolation::getMessage).collect(Collectors.joining());
+//        assertEquals("O intervalo tem que ser positivo!", error);
+//    }
 
 }

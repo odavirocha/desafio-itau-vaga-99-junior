@@ -6,10 +6,12 @@ import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.constraints.PositiveOrZero;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import dev.droca.desafio_itau.dto.StatisticResponseDTO;
@@ -21,6 +23,7 @@ import jakarta.validation.Valid;
 @Controller
 @RequestMapping("/")
 @Slf4j
+@Validated
 @Tag(name = "Rota de transações", description = "Nessa rota é possível criar, deletar e receber uma visão geral de suas transações")
 public class DesafioController {
     
@@ -53,7 +56,7 @@ public class DesafioController {
     @GetMapping({"estatistica", "estatistica/{range}"})
     @Operation(summary = "Retorna estatísticas das transações", description = "Retorna a quantidade de transações, soma, média, valor mínimo e máximo de transações")
     @ApiResponse(responseCode = "200")
-    public ResponseEntity<StatisticResponseDTO> getStatistic(@Parameter(description = "Tempo (em segundos) para calcular as estatísticas.", example = "120") @PathVariable(required = false) Integer range) {
+    public ResponseEntity<StatisticResponseDTO> getStatistic(@Parameter(description = "Intervalo de tempo (em segundos) para calcular as estatísticas.", example = "120") @PathVariable(required = false) @PositiveOrZero(message = "O intervalo tem que ser positivo!") Integer range) {
         int trueRange = range != null ? range : 60;
         log.info("Retornando todas as estatísticas dos últimos " + trueRange + " segundos");
         StatisticResponseDTO response = desafioService.getStatistic(trueRange);

@@ -1,5 +1,6 @@
 package dev.droca.desafio_itau.controller;
 
+import jakarta.validation.ConstraintViolationException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.converter.HttpMessageNotReadableException;
@@ -20,7 +21,13 @@ public class ApplicationControllerAdvice {
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
     @ResponseStatus(HttpStatus.UNPROCESSABLE_ENTITY)
-    public void handleValidationException(MethodArgumentNotValidException e) {
+    public void handleValidationExceptionAnnotationValid(MethodArgumentNotValidException e) {
+        log.warn("Transação não aceita. {}", e.getMessage());
+    }
+
+    @ExceptionHandler(ConstraintViolationException.class)
+    @ResponseStatus(HttpStatus.UNPROCESSABLE_ENTITY)
+    public void handleValidationExceptionAnnotationValidated(ConstraintViolationException e) {
         log.warn("Transação não aceita. {}", e.getMessage());
     }
 
