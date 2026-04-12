@@ -19,8 +19,6 @@ public class DesafioService {
 
     Db db;
 
-    public DesafioService() {}
-
     public DesafioService(Db db) {
         this.db = db;
     }
