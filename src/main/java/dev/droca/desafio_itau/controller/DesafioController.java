@@ -1,6 +1,5 @@
 package dev.droca.desafio_itau.controller;
 
-import dev.droca.desafio_itau.dto.TransactionResponseDTO;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -38,10 +37,10 @@ public class DesafioController {
     @ApiResponse(responseCode = "201", content = @Content)
     @ApiResponse(responseCode = "422", content = @Content)
     @ApiResponse(responseCode = "400", content = @Content)
-    public ResponseEntity<TransactionResponseDTO> createTransaction(@RequestBody @Valid TransactionRequestDTO transactionRequest) {
+    public ResponseEntity<Void> createTransaction(@RequestBody @Valid TransactionRequestDTO transactionRequest) {
         log.info("Criando uma nova transação!");
-        TransactionResponseDTO response = desafioService.createTransaction(transactionRequest);
-        return new ResponseEntity<>(response, HttpStatus.CREATED);
+        desafioService.createTransaction(transactionRequest);
+        return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
     @DeleteMapping("transacao")
@@ -50,16 +49,16 @@ public class DesafioController {
     public ResponseEntity<Void> deleteTransaction() {
         log.info("Limpado todas as transações!");
         desafioService.deleteTransaction();
-        return new ResponseEntity<>(HttpStatus.OK);
+        return ResponseEntity.status(HttpStatus.OK).build();
     }
 
     @GetMapping({"estatistica", "estatistica/{range}"})
     @Operation(summary = "Retorna estatísticas das transações", description = "Retorna a quantidade de transações, soma, média, valor mínimo e máximo de transações")
     @ApiResponse(responseCode = "200")
+    @ApiResponse(responseCode = "422")
     public ResponseEntity<StatisticResponseDTO> getStatistic(@Parameter(description = "Intervalo de tempo (em segundos) para calcular as estatísticas.", example = "120") @PathVariable(required = false) @PositiveOrZero(message = "O intervalo tem que ser positivo!") Integer range) {
-        int trueRange = range != null ? range : 60;
-        log.info("Retornando todas as estatísticas dos últimos " + trueRange + " segundos");
-        StatisticResponseDTO response = desafioService.getStatistic(trueRange);
+        log.info("Retornando todas as estatísticas dos últimos " + range + " segundos");
+        StatisticResponseDTO response = desafioService.getStatistic(range);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 

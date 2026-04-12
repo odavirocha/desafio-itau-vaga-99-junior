@@ -25,14 +25,13 @@ public class DesafioService {
         this.db = db;
     }
 
-    public TransactionResponseDTO createTransaction(TransactionRequestDTO transactionRequest) {
+    public void createTransaction(TransactionRequestDTO transactionRequest) {
         long processStart = System.nanoTime();
-        TransactionFakeEntity response = db.save(transactionRequest);
+        db.save(transactionRequest);
         log.info("Transação criada. {}", OffsetDateTime.now());
 
         long processEnd = System.nanoTime();
         log.info("Tempo de execução do método deleteTransaction() foi de: "+ (((double)processEnd - processStart) / 1000000)+ "ms");
-        return new TransactionResponseDTO(response.transactionRequest().valor().setScale(2, RoundingMode.DOWN), response.transactionRequest().dataHora());
     }
 
     public void deleteTransaction() {
@@ -44,9 +43,10 @@ public class DesafioService {
         log.info("Tempo de execução do método deleteTransaction() foi de: "+ (((double)processEnd - processStart) / 1000000)+ "ms");
     }
     
-    public StatisticResponseDTO getStatistic(int range) {
+    public StatisticResponseDTO getStatistic(Integer range) {
         long processStart = System.nanoTime();
-        OffsetDateTime limitDate = OffsetDateTime.now().minusSeconds(range);
+        int trueRange = range != null ? range : 60;
+        OffsetDateTime limitDate = OffsetDateTime.now().minusSeconds(trueRange);
         List<TransactionFakeEntity> transactions = db.getDatabase();
         Set<TransactionRequestDTO> betweenValues = new HashSet<>(); // dentro dos 60s
         DoubleSummaryStatistics statistic = new DoubleSummaryStatistics();

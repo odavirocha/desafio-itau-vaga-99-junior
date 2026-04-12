@@ -25,8 +25,4 @@ public class Db {
     public List<TransactionFakeEntity> getDatabase() {
         return database;
     }
-
-    public Object sabe() {
-        return null;
-    }
 }
