@@ -1,5 +1,6 @@
 services:
   app:
+    image: odavirocha/desafio-itau
     container_name: desafio-itau
     build: .
     ports:

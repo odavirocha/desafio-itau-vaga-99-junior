@@ -53,22 +53,7 @@ lista de requisitos no readme do [projeto original](https://github.com/rafaellin
 
 - ### Passo a passo
 
-  ### 1. Instale as dependências.
-
-  Rode no terminal o comando:
-
-    ```bash
-    ./mvnw clean install
-    ```
-  ou
-    ```bash
-    mvn clean install
-    ```
-
-  ### 2. Execute o projeto.
-  O projeto pode ser executado utilizando banco de dados local ou externo.
-
-  Para usar banco de dados local rode no terminal o comando:
+  ### Execute o projeto.
 
     ```bash
     ./mvnw spring-boot:run
@@ -79,7 +64,7 @@ lista de requisitos no readme do [projeto original](https://github.com/rafaellin
     ```
 
   Isso deixará a API disponível em http://localhost:8080/.
-  > ♦️ Use ferramentas como [Insmonia](https://insomnia.rest/download) ou [Postman](https://www.postman.com/) para testar a API.
+  > ♦️ Use ferramentas como [Insomnia](https://insomnia.rest/download) ou [Postman](https://www.postman.com/) para testar a API.
 </details>
 
 
@@ -90,17 +75,16 @@ lista de requisitos no readme do [projeto original](https://github.com/rafaellin
     - Docker
     - Docker Compose
 
-- ### Passo a passo
+- ### Iniciar o projeto
 
-  ### 1. Escolha qual banco usar.
-
-    - Para usar banco em nuvem.
     ```bash
-    
+      docker compose up -d
     ```
 
-  Isso deixará a API disponível em http://localhost:8080/.
-  > ♦️ Use ferramentas como [Insmonia](https://insomnia.rest/download) ou [Postman](https://www.postman.com/) para testar a API.
+  Isso API estará disponível em http://localhost:3030/.
+  > ♦️ Use ferramentas como [Insomnia](https://insomnia.rest/download) ou [Postman](https://www.postman.com/) para testar a API.
+
+  > Caso queria ver os logs utilize `docker compose logs app`.
 </details>
 
 ---
@@ -164,15 +148,14 @@ lista de requisitos no readme do [projeto original](https://github.com/rafaellin
 </details>
 
 ## Extras
+O desafio propôs funcionalidades opcionais como diferencial. Todas foram implementadas:
 
-Vamos propôr a seguir alguns desafios extras caso você queira testar seus conhecimentos ao máximo! Nenhum desses requisitos é obrigatório, mas são desejados e podem ser um diferencial!
-
-1. **Testes automatizados:** Sejam unitários e/ou funcionais, testes automatizados são importantes e ajudam a evitar problemas no futuro. Se você fizer testes automatizados, atente-se na efetividade dos seus testes! Por exemplo, testar apenas os "caminhos felizes" não é muito efetivo. ✅
-2. **Containerização:** Você consegue criar meios para disponibilizar sua aplicação como um container? _OBS: Não é necessário publicar o container da sua aplicação!_
-3. **Logs:** Sua aplicação informa o que está acontecendo enquanto ela trabalha? Isso é útil para ajudar as pessoas desenvolvedoras a solucionar eventuais problemas que possam ocorrer. ✅
-4. **Observabilidade:** Sua API tem algum endpoint para verificação da saúde da aplicação (healthcheck)? ✅
-5. **Performance:** Você consegue estimar quanto tempo sua aplicação gasta para calcular as estatísticas? ✅
-6. **Tratamento de Erros:** O Spring Boot dá às pessoas desenvolvedoras ferramentas para se melhorar o tratamento de erros padrão. Você consegue alterar os erros padrão para retornar _quais_ erros ocorreram? ✅
-7. **Documentação da API:** Você consegue documentar sua API? Existem [ferramentas](https://swagger.io/) e [padrões](http://raml.org/) que podem te ajudar com isso! ✅
-8. **Documentação do Sistema:** Sua aplicação provavelmente precisa ser construída antes de ser executada. Você consegue documentar como outra pessoa que pegou sua aplicação pela primeira vez pode construir e executar sua aplicação? ✅
-9. **Configurações:** Você consegue deixar sua aplicação configurável em relação a quantidade de segundos para calcular as estatísticas? Por exemplo: o padrão é 60 segundos, mas e se o usuário quiser 120 segundos? ✅
+- [x] **Testes automatizados:** Sejam unitários e/ou funcionais, testes automatizados são importantes e ajudam a evitar problemas no futuro. Se você fizer testes automatizados, atente-se na efetividade dos seus testes! Por exemplo, testar apenas os "caminhos felizes" não é muito efetivo. 
+- [x] **Containerização:** Você consegue criar meios para disponibilizar sua aplicação como um container? _OBS: Não é necessário publicar o container da sua aplicação!_
+- [x] **Logs:** Sua aplicação informa o que está acontecendo enquanto ela trabalha? Isso é útil para ajudar as pessoas desenvolvedoras a solucionar eventuais problemas que possam ocorrer. 
+- [x] **Observabilidade:** Sua API tem algum endpoint para verificação da saúde da aplicação (healthcheck)? 
+- [x] **Performance:** Você consegue estimar quanto tempo sua aplicação gasta para calcular as estatísticas? 
+- [x] **Tratamento de Erros:** O Spring Boot dá às pessoas desenvolvedoras ferramentas para se melhorar o tratamento de erros padrão. Você consegue alterar os erros padrão para retornar _quais_ erros ocorreram? 
+- [x] **Documentação da API:** Você consegue documentar sua API? Existem [ferramentas](https://swagger.io/) e [padrões](http://raml.org/) que podem te ajudar com isso! 
+- [x] **Documentação do Sistema:** Sua aplicação provavelmente precisa ser construída antes de ser executada. Você consegue documentar como outra pessoa que pegou sua aplicação pela primeira vez pode construir e executar sua aplicação? 
+- [x] **Configurações:** Você consegue deixar sua aplicação configurável em relação a quantidade de segundos para calcular as estatísticas? Por exemplo: o padrão é 60 segundos, mas e se o usuário quiser 120 segundos? 
