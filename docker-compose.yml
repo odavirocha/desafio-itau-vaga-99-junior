@@ -1,0 +1,6 @@
+services:
+  app:
+    container_name: desafio-itau
+    build: .
+    ports:
+      - "3030:8080"
