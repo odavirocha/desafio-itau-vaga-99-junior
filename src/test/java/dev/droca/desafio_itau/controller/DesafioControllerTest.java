@@ -2,7 +2,6 @@ package dev.droca.desafio_itau.controller;
 
 import dev.droca.desafio_itau.dto.StatisticResponseDTO;
 import dev.droca.desafio_itau.dto.TransactionRequestDTO;
-import dev.droca.desafio_itau.dto.TransactionResponseDTO;
 import dev.droca.desafio_itau.service.DesafioService;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
